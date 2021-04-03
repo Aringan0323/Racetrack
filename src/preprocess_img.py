@@ -46,7 +46,7 @@ class TriangleMask:
         bgr_mask[:,:,1] = white_triangle_mask
         bgr_mask[:,:,2] = white_triangle_mask
 
-        self.img_pub.publish(self.bridge.cv2_to_imgmsg(bgr_mask))
+        self.img_pub.publish(self.bridge.cv2_to_imgmsg(bgr_mask, 'bgr8'))
 
 
 if __name__ == "__main__":
