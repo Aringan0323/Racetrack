@@ -12,20 +12,35 @@ class TriangleMask:
         self.img_sub = rospy.Subscriber('/camera/rgb/image_raw', Image, self.img_callback)
         self.img_pub = rospy.Publisher('/triangle_mask', Image, queue_size=1)
         self.bridge = CvBridge()
+        
+        # Width and height of the image. The dimensions are specific to the resolution of the 
+        # robot's camera, so a robot with a camera of a different resolution will have to 
+        # have these values tuned to the resolution of the camera.
+        w = 1920
+        h = 1080
+
+        # Defining the verticies of the trapezoid
+        y1 = int((5*h)/9)
+        y2 = int((7*h)/9)
+        x1 = int((6*w)/16)
+        x2 = int((10*w)/16)
+
+        # Defining the areas of the image around the trapezoid which will be masked out
+        self.area1 = np.array([[0,0], [w,0],[w,y2],[x2,y1],[x1,y1],[0,y2]], np.int32)
+        self.area2 = np.array([[0,h],[0,y2],[w,y2],[w,h]], np.int32)
 
     def img_callback(self, msg):
         img = self.bridge.imgmsg_to_cv2(msg, 'bgr8')
-        w = img.shape[1]
-        h = img.shape[0]
-        verts = np.array([[0,0],[w,0],[w,h],[int(w/2),int(h/2.2)],[0,h]], np.int32)
-        triangle_img = cv.fillPoly(img,pts=[verts], color=(0, 0, 255))
 
-        triangle_img_hsv = cv.cvtColor(triangle_img, cv.COLOR_BGR2HSV)
-        lower_white = np.array([0,0,0], dtype=np.uint8)
-        upper_white = np.array([0,0,255], dtype=np.uint8)
-        white_triangle_mask = cv.inRange(triangle_img_hsv,  lower_white, upper_white)
+        # Filling the areas around the trapezoid in the image
+        triangle_img = cv.fillPoly(img,pts=[self.area1,self.area2], color=(0, 0, 0))
 
-        self.img_pub.publish(self.bridge.cv2_to_imgmsg(white_triangle_mask))
+        # triangle_img_hsv = cv.cvtColor(triangle_img, cv.COLOR_BGR2HSV)
+        # lower_white = np.array([0,0,0], dtype=np.uint8)
+        # upper_white = np.array([0,0,255], dtype=np.uint8)
+        # white_triangle_mask = cv.inRange(triangle_img_hsv,  lower_white, upper_white)
+
+        self.img_pub.publish(self.bridge.cv2_to_imgmsg(triangle_img))
 
 
 if __name__ == "__main__":
