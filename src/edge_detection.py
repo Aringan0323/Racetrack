@@ -17,7 +17,7 @@ class EdgeDetection:
 
         gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
-        kernelSize = 9
+        kernelSize = 31
         grayBlur = cv2.GaussianBlur(gray, (kernelSize, kernelSize), 0)
 
         lowEnd = 30
