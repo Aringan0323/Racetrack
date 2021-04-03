@@ -8,7 +8,7 @@ from sensor_msgs.msg import Image
 class EdgeDetection:
 
     def __init__(self):
-        self.img_sub = rospy.Subscriber('/camera/rgb/image_raw', Image, self.img_callback)
+        self.img_sub = rospy.Subscriber('/triangle_mask', Image, self.img_callback)
         self.img_pub = rospy.Publisher('/canny_mask', Image, queue_size=1)
         self.bridge = cv_bridge.CvBridge()
 
