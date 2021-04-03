@@ -33,14 +33,20 @@ class TriangleMask:
         img = self.bridge.imgmsg_to_cv2(msg, 'bgr8')
 
         # Filling the areas around the trapezoid in the image
-        triangle_img = cv.fillPoly(img,pts=[self.area1,self.area2], color=(0, 0, 0))
+        triangle_img = cv.fillPoly(img,pts=[self.area1,self.area2], color=(0, 0, 255))
 
-        # triangle_img_hsv = cv.cvtColor(triangle_img, cv.COLOR_BGR2HSV)
-        # lower_white = np.array([0,0,0], dtype=np.uint8)
-        # upper_white = np.array([0,0,255], dtype=np.uint8)
-        # white_triangle_mask = cv.inRange(triangle_img_hsv,  lower_white, upper_white)
 
-        self.img_pub.publish(self.bridge.cv2_to_imgmsg(triangle_img))
+        triangle_img_hsv = cv.cvtColor(triangle_img, cv.COLOR_BGR2HSV)
+        lower_white = np.array([0,0,0], dtype=np.uint8)
+        upper_white = np.array([0,0,255], dtype=np.uint8)
+        white_triangle_mask = cv.inRange(triangle_img_hsv,  lower_white, upper_white)
+
+        bgr_mask = np.zeros_like(img)
+        bgr_mask[:,:,0] = white_triangle_mask
+        bgr_mask[:,:,1] = white_triangle_mask
+        bgr_mask[:,:,2] = white_triangle_mask
+
+        self.img_pub.publish(self.bridge.cv2_to_imgmsg(bgr_mask))
 
 
 if __name__ == "__main__":
