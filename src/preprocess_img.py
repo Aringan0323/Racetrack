@@ -15,11 +15,8 @@ class TriangleMask:
 
     def img_callback(self, msg):
         img = self.bridge.imgmsg_to_cv2(msg, 'bgr8')
-        w = img.shape[0]
+        w = img.shape[1]
         h = img.shape[0]
-        apex = [int(w/2), int(h/2)]
-        left_vert = [0,h]
-        right_vert = [w,h]
         verts = np.array([[w,h],  [0,h], [int(w/2), int(h/2)]], np.int32)
         masked_img = cv.fillPoly(img,pts=[verts], color=(0, 0, 255))
         cv.imshow("Mask", masked_img)
