@@ -26,10 +26,6 @@ class EdgeDetection:
 
         self.img_pub.publish(self.bridge.cv2_to_imgmsg(edges))
 
-if __name__ == "__main__":
-    rospy.init_node('canny_mask')
-    mask_publisher = EdgeDetection()
-    rospy.spin()
 
 
         

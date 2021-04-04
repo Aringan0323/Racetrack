@@ -24,8 +24,4 @@ class findCentroid:
             self.img_pub.publish(self.bridge.cv2_to_imgmsg(img))
             self.centroid_pub.publish(cx)
         
-if __name__ == "__main__":
-    rospy.init_node('centroidXVal')
-    mask_publisher = findCentroid()
-    rospy.spin()
 

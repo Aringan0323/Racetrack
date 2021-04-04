@@ -48,8 +48,3 @@ class TriangleMask:
 
         self.img_pub.publish(self.bridge.cv2_to_imgmsg(bgr_mask, 'bgr8'))
 
-
-if __name__ == "__main__":
-    rospy.init_node('triangle_mask')
-    mask_publisher = TriangleMask()
-    rospy.spin()

@@ -19,12 +19,6 @@ class pid:
     def centroid_cb(self, msg):
         cx = msg.data
         angle_err = (cx+120) - 960
-        self.twist.linear.x = .3
-        self.twist.angular.z = -(float(angle_err)/(960))* 1.57
+        self.twist.linear.x = .6
+        self.twist.angular.z = -(float(angle_err)/(960))* 1.3
         self.move.publish(self.twist)
-
-if __name__ == "__main__":
-
-    rospy.init_node('PID_controller')
-    controller = pid()
-    rospy.spin()
