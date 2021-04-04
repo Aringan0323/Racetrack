@@ -4,6 +4,7 @@ import rospy, cv2, cv_bridge, numpy
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from sensor_msgs.msg import Image
+from preprocess_img import TriangleMask
 
 class EdgeDetection:
 
@@ -26,6 +27,11 @@ class EdgeDetection:
 
         self.img_pub.publish(self.bridge.cv2_to_imgmsg(edges))
 
+if __name__ == "__main__":
+    rospy.init_node('canny_mask')
+    mask_publisher = TriangleMask()
+    edge_detector = EdgeDetection()
+    rospy.spin()
 
 
         

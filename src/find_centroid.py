@@ -3,6 +3,8 @@
 import rospy, cv2, cv_bridge, numpy
 from sensor_msgs.msg import Image
 from std_msgs.msg import Int32
+from preprocess_img import TriangleMask
+from edge_detection import EdgeDetection
 
 class findCentroid:
 
@@ -24,4 +26,9 @@ class findCentroid:
             self.img_pub.publish(self.bridge.cv2_to_imgmsg(img))
             self.centroid_pub.publish(cx)
         
-
+if __name__ == "__main__":
+    rospy.init_node('centroid_finder')
+    mask_publisher = TriangleMask()
+    edge_detector = EdgeDetection()
+    centroid_finder = findCentroid()
+    rospy.spin()
