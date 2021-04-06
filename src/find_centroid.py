@@ -17,13 +17,17 @@ class findCentroid:
     def img_callback(self, msg):
         img = self.bridge.imgmsg_to_cv2(msg)
 
+        # Create Centroid
         M = cv2.moments(img)
 
+        # Add centroid to middle of dashed line
         if M['m00'] > 0:
             cx = int(M['m10']/M['m00'])
             cy = int(M['m01']/M['m00'])
             img = cv2.circle(img, (cx, cy), 20, (255,255,255), -1)
             self.img_pub.publish(self.bridge.cv2_to_imgmsg(img))
+
+            # Publish for use in PID
             self.centroid_pub.publish(cx)
         
 if __name__ == "__main__":
