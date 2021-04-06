@@ -23,8 +23,8 @@ class TriangleMask:
         # Defining the verticies of the trapezoid
 
 
-        x1 = int((2*w)/16)# + offset
-        x2 = int((14*w)/16)# + offset
+        x1 = int((8*w)/16)
+        x2 = int((8*w)/16)
         y1 = int((5*h)/9)
         y2 = int((9*h)/9)
         

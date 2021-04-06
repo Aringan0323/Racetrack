@@ -24,7 +24,7 @@ class Lines:
 
         img = self.bridge.imgmsg_to_cv2(img_msg)
 
-        self.lines = cv2.HoughLines(img,  1, math.pi / 180, 100, 0, 0, min_theta=0, max_theta=math.pi/2)
+        self.lines = cv2.HoughLines(img,  1, math.pi / 180, 60, 0, 0, min_theta=2.5*math.pi/4, max_theta=5.5*math.pi/4)
 
     def og_img_cb(self, img_msg):
         img = self.bridge.imgmsg_to_cv2(img_msg, 'bgr8')
@@ -33,7 +33,7 @@ class Lines:
             for line in self.lines:
                 rho = line[0][0]
                 theta = line[0][1]
-                thetalist.append(theta)
+                thetalist.append(rho)
                 a = math.cos(theta)
                 b = math.sin(theta)
                 x0 = a * rho
@@ -44,12 +44,12 @@ class Lines:
                 y2 = int(y0 - 1000*(a))
                 img = cv2.line(img, (x1, y1), (x2, y2), (255, 255, 0), 3)
             avgtheta = (sum(thetalist)/len(thetalist))
-            avgangle = avgtheta*(180/math.pi)
             self.img_pub.publish(self.bridge.cv2_to_imgmsg(img))
         except TypeError as e:
             avgangle = 180
             pass
-        self.theta_pub.publish(int(avgangle))
+        print(avgtheta)
+        self.theta_pub.publish(int(avgtheta))
 
 if __name__ == "__main__":
     rospy.init_node('centroid_finder')

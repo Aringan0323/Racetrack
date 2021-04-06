@@ -12,6 +12,5 @@ if __name__ == "__main__":
     pi = TriangleMask()
     ed = EdgeDetection()
     fc = findCentroid()
-    ln = Lines()
     pd = pid()
     rospy.spin()
