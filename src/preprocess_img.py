@@ -2,6 +2,7 @@
 
 import rospy
 from sensor_msgs.msg import Image
+from std_msgs.msg import Int32
 import cv2 as cv
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np
@@ -20,11 +21,13 @@ class TriangleMask:
         h = 1080
 
         # Defining the verticies of the trapezoid
-        y1 = int((5*h)/9)
-        y2 = int((7*h)/9)
-        x1 = int((6*w)/16)
-        x2 = int((10*w)/16)
 
+
+        x1 = int((2*w)/16)# + offset
+        x2 = int((14*w)/16)# + offset
+        y1 = int((5*h)/9)
+        y2 = int((9*h)/9)
+        
         # Defining the areas of the image around the trapezoid which will be masked out
         self.area1 = np.array([[0,0], [w,0],[w,y2],[x2,y1],[x1,y1],[0,y2]], np.int32)
         self.area2 = np.array([[0,h],[0,y2],[w,y2],[w,h]], np.int32)
@@ -47,6 +50,11 @@ class TriangleMask:
         bgr_mask[:,:,2] = white_triangle_mask
 
         self.img_pub.publish(self.bridge.cv2_to_imgmsg(bgr_mask, 'bgr8'))
+
+
+    def define_triangle(self):
+        return
+
 
 if __name__ == "__main__":
     rospy.init_node('image_masker')

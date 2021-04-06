@@ -4,6 +4,7 @@ from edge_detection import EdgeDetection
 from find_centroid import findCentroid 
 from pid import pid
 from preprocess_img import TriangleMask
+from draw_lines import Lines
 import rospy
 
 if __name__ == "__main__":
@@ -11,5 +12,6 @@ if __name__ == "__main__":
     pi = TriangleMask()
     ed = EdgeDetection()
     fc = findCentroid()
+    ln = Lines()
     pd = pid()
     rospy.spin()
