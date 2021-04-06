@@ -25,7 +25,7 @@ class TriangleMask:
 
         x1 = int((8*w)/16)
         x2 = int((8*w)/16)
-        y1 = int((5*h)/9)
+        y1 = int((5.5*h)/9)
         y2 = int((9*h)/9)
         
         # Defining the areas of the image around the trapezoid which will be masked out

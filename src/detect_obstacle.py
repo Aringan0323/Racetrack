@@ -6,6 +6,11 @@ import numpy as np
 from std_msgs.msg import Int32
 from sensor_msgs.msg import LaserScan
 
+'''
+This class is not used in the main program. The original intention for this function was to 
+detect obstacles in the robot's path and then publish an offset value that determined where it
+should move to avoid the obstacle.
+'''
 
 class obstacleDetector:
 
@@ -15,6 +20,8 @@ class obstacleDetector:
         self.offset_pub = rospy.Publisher('/offset', Int32, queue_size=1)
 
     def laser_cb(self, msg):
+        # Looks in front of the robot for obstacles and publishes the index in the ranges array
+        # of the closest object in front of the robot.
         ranges = msg.ranges
         n = len(ranges)
         front_left = ranges[0:int(n/30)]

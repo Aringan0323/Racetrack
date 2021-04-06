@@ -8,6 +8,10 @@ from std_msgs.msg import Int32
 from preprocess_img import TriangleMask
 from edge_detection import EdgeDetection
 
+'''
+This function is not used in the main. The original intention for this class was to be able to
+keep the robot within the lane lines while still avoiding obstacles in its path.
+''' 
 
 class Lines:
 
@@ -16,7 +20,6 @@ class Lines:
         self.img_sub = rospy.Subscriber('/canny_mask', Image, self.img_cb)
         self.og_img_sub = rospy.Subscriber('/camera/rgb/image_raw', Image, self.og_img_cb)
         self.img_pub = rospy.Publisher('/line_overlay', Image, queue_size=1)
-        self.theta_pub = rospy.Publisher('/theta', Int32, queue_size=1)
         self.bridge = cv_bridge.CvBridge()
         self.lines = None
 
@@ -24,6 +27,8 @@ class Lines:
 
         img = self.bridge.imgmsg_to_cv2(img_msg)
 
+
+        # Defines lines in image with Hough line transform
         self.lines = cv2.HoughLines(img,  1, math.pi / 180, 60, 0, 0, min_theta=2.5*math.pi/4, max_theta=5.5*math.pi/4)
 
     def og_img_cb(self, img_msg):
@@ -48,7 +53,7 @@ class Lines:
                 y2 = int(y0 - 1000*(a))
                 #draws line on image
                 img = cv2.line(img, (x1, y1), (x2, y2), (255, 255, 0), 3)
-            #publishes the images with the lines drawn on it
+            #publishes the original raw image with the lines drawn on it
             self.img_pub.publish(self.bridge.cv2_to_imgmsg(img))
         except TypeError as e:
             avgangle = 180
