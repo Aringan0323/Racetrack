@@ -7,6 +7,8 @@ from preprocess_img import TriangleMask
 from draw_lines import Lines
 import rospy
 
+# Runs all of the required files in the correct order
+
 if __name__ == "__main__":
     rospy.init_node('main')
     pi = TriangleMask()

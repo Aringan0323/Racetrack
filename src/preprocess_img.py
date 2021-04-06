@@ -38,12 +38,15 @@ class TriangleMask:
         # Filling the areas around the trapezoid in the image
         triangle_img = cv.fillPoly(img,pts=[self.area1,self.area2], color=(0, 0, 255))
 
-
+        
         triangle_img_hsv = cv.cvtColor(triangle_img, cv.COLOR_BGR2HSV)
+
+        # Defines white ranges and applies a color mask to remove all non-white pixels from the image
         lower_white = np.array([0,0,0], dtype=np.uint8)
         upper_white = np.array([0,0,255], dtype=np.uint8)
         white_triangle_mask = cv.inRange(triangle_img_hsv,  lower_white, upper_white)
 
+        # Creates BGR image from grayscale image
         bgr_mask = np.zeros_like(img)
         bgr_mask[:,:,0] = white_triangle_mask
         bgr_mask[:,:,1] = white_triangle_mask
@@ -52,8 +55,6 @@ class TriangleMask:
         self.img_pub.publish(self.bridge.cv2_to_imgmsg(bgr_mask, 'bgr8'))
 
 
-    def define_triangle(self):
-        return
 
 
 if __name__ == "__main__":
